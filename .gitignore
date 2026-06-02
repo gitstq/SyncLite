@@ -1,0 +1,27 @@
+# Build artifacts
+/target
+**/*.rs.bk
+*.pdb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+.synclite/
+*.log
+
+# Test artifacts
+/test_data/
+/tmp/
+
+# Environment
+.env
+.env.local

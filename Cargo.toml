@@ -1,0 +1,83 @@
+[package]
+name = "synclite"
+version = "1.0.0"
+edition = "2021"
+authors = ["Lobster Dev <lobster@example.com>"]
+description = "A lightweight, fast, and intelligent file synchronization and backup tool"
+license = "MIT"
+repository = "https://github.com/lobsterdev/synclite"
+keywords = ["sync", "backup", "file", "cli", "tool"]
+categories = ["command-line-utilities", "filesystem"]
+rust-version = "1.70"
+
+[[bin]]
+name = "synclite"
+path = "src/main.rs"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+
+# CLI parsing
+clap = { version = "4.4", features = ["derive", "env"] }
+
+# Configuration
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+
+# File system operations
+walkdir = "2.4"
+notify = { version = "6.1", features = ["macos_fsevent"] }
+
+# Cryptography for file hashing
+sha2 = "0.10"
+hex = "0.4"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Progress bar
+indicatif = "0.17"
+
+# Colors in terminal
+colored = "2.1"
+
+# HTTP client for S3
+reqwest = { version = "0.11", features = ["json", "stream"], optional = true }
+
+# AWS SDK for S3
+aws-sdk-s3 = { version = "1.5", optional = true }
+aws-config = { version = "1.1", optional = true }
+
+# SFTP support
+russh = { version = "0.40", optional = true }
+russh-sftp = { version = "2.0", optional = true }
+
+# Cron for scheduling
+cron = { version = "0.12", optional = true }
+chrono = "0.4"
+
+# Compression
+flate2 = "1.0"
+tar = "0.4"
+
+[features]
+default = ["s3", "sftp", "scheduler"]
+s3 = ["dep:aws-sdk-s3", "dep:aws-config"]
+sftp = ["dep:russh", "dep:russh-sftp"]
+scheduler = ["dep:cron"]
+
+[dev-dependencies]
+tempfile = "3.9"
+tokio-test = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
+codegen-units = 1
